@@ -2,18 +2,19 @@ package agh.ics.oop.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class Globe {
     private int height;
     private int width;
+    private BehaviourType behaviour;
     private HashMap<Vector2d, Grass> grassOnMap = new HashMap<>();
     private HashMap<Vector2d, Integer> betterGrowth = new HashMap<Vector2d, Integer>();
     private ArrayList<Animal> animalsOnMap = new ArrayList<>();
-    public Globe(int animalsNumber, int grassNumber) {
+    public Globe(int animalsNumber, int grassNumber, BehaviourType NormalBehaviour) {
         height = 10; //CONFIG
         width = 10; //CONFIG
+        behaviour = NormalBehaviour; //CONFIG
         for (int i=0; i<animalsNumber; i++) {
             Animal animal = new Animal();
             placeAnimal(animal);
@@ -53,7 +54,7 @@ public class Globe {
             else {
                 animal.position = newPosition;
             }
-            animal.nextGeneIndex(true); //CONFIG
+            behaviour.nextGene(animal);
         }
         else {
             animal.isAlive = false;

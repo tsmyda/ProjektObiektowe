@@ -34,15 +34,6 @@ public class Animal {
         this.activeGeneIndex = generator.nextInt(6);
     }
      */
-
-    public void nextGeneIndex(boolean simulationType) {
-        if (simulationType && generator.nextInt(5)%5==0) {
-            this.activeGeneIndex = generator.nextInt(6); //CONFIG
-        }
-        else {
-            this.activeGeneIndex = (this.activeGeneIndex+1)%genes.length;
-        }
-    }
     public Direction getOrientation() {
         return orientation;
     }
