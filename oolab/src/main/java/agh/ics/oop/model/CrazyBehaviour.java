@@ -11,5 +11,5 @@ public class CrazyBehaviour implements BehaviourType {
         }
         else animal.activeGeneIndex=(animal.activeGeneIndex+1)%animal.genes.length;
     }
-    }
 }
+

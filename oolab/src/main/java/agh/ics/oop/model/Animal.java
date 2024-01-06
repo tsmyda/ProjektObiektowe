@@ -6,38 +6,52 @@ public class Animal {
     protected Direction orientation;
     protected Vector2d position;
     protected int energy;
+    protected int age;
+    protected int children;
+    protected int grassEaten;
     protected Direction[] genes;
     protected int activeGeneIndex;
     protected boolean isAlive;
     Random generator = new Random();
-
     //konkstruktor spawnerowy
-    public Animal() {
+
+    public Animal(Parameters parameters) {
         this.isAlive = true;
         this.orientation = Direction.numToDirection(generator.nextInt(8));
-        this.position = new Vector2d(generator.nextInt(10), generator.nextInt(10)); //rozmiar mapy, zalezny od configu, pozniej zmienic
-        this.energy = 5; //zmienic pozniej, zalezne od configu
-        this.genes = new Direction[6]; //config
+        this.position = new Vector2d(generator.nextInt(parameters.getMapWidth()), generator.nextInt(parameters.getMapHeight())); //rozmiar mapy, zalezny od configu, pozniej zmienic
+        this.energy = parameters.getStartEnergy(); //zmienic pozniej, zalezne od configu
+        this.genes = new Direction[parameters.getGenomeLength()]; //config
+        this.age = 0;
+        this.children = 0;
+        this.grassEaten = 0;
         //ZMIEN 6 NA DLUGOSC GENOW
-        for (int i=0; i<6; i++) {
+        for (int i=0; i<parameters.getGenomeLength(); i++) {
             genes[i] = Direction.numToDirection(generator.nextInt(8));
         }
-        this.activeGeneIndex = generator.nextInt(6);
+        this.activeGeneIndex = generator.nextInt(parameters.getGenomeLength());
     }
-    /*
-    //konksturktor rodzenia
-    public Animal(Animal mom, Animal dad) {
+    public Animal(Direction[] genes,Parameters parameters) {
         this.isAlive = true;
         this.orientation = Direction.numToDirection(generator.nextInt(8));
-        this.position = mom.getPosition(); //rozmiar mapy, zalezny od configu, pozniej zmienic
-        int childEnergy = mom.getEnergy()/2 + dad.getEnergy()/2;
-        this.activeGeneIndex = generator.nextInt(6);
+        this.position = new Vector2d(generator.nextInt(parameters.getMapWidth()), generator.nextInt(parameters.getMapHeight())); //rozmiar mapy, zalezny od configu, pozniej zmienic
+        this.energy = parameters.getStartEnergy(); //zmienic pozniej, zalezne od configu
+        this.genes = genes; //config
+        this.age = 0;
+        this.children = 0;
+        this.grassEaten = 0;
+        //ZMIEN 6 NA DLUGOSC GENOW
+        this.activeGeneIndex = generator.nextInt(parameters.getGenomeLength());
     }
-     */
+
+
     public Direction getOrientation() {
         return orientation;
     }
 
+    public void eat(Parameters parameters){
+        this.energy += parameters.getFoodEnergy();
+        this.grassEaten += 1;
+    }
     public Vector2d getPosition() {
         return position;
     }
