@@ -1,44 +1,70 @@
 package agh.ics.oop.model;
 
-public class Animal implements WorldElement{
-    private static final Vector2d DEFAULT_POSITION = new Vector2d(2,2);
-    private static final MapDirection DEFAULT_ORIENTATION = MapDirection.NORTH;
-    private static final Vector2d LEFT_EDGE = new Vector2d(0,0);
-    private static final Vector2d RIGHT_EDGE = new Vector2d(4,4);
-    private Vector2d position;
-    private MapDirection orientation;
-    public Animal(Vector2d position) {
-        this.orientation = DEFAULT_ORIENTATION;
-        this.position = position;
-    }
-    public String toString() {
-        return switch (orientation) {
-            case NORTH -> "^";
-            case EAST -> ">";
-            case SOUTH -> "v";
-            case WEST -> "<";
-        };
-    }
-    public boolean isAt(Vector2d position) {
-        return position.equals(this.position);
-    }
-    public void move(MoveValidator validator, MoveDirection direction) {
-        Vector2d new_position = position;
-        switch (direction) {
-            case RIGHT -> orientation = orientation.next();
-            case LEFT ->  orientation = orientation.previous();
-            case FORWARD -> new_position = position.add(orientation.toUnitVector());
-            case BACKWARD -> new_position = position.subtract(orientation.toUnitVector());
+import java.util.Random;
+
+public class Animal {
+    protected Direction orientation;
+    protected Vector2d position;
+    protected int energy;
+    protected int age;
+    protected int children;
+    protected int grassEaten;
+    protected Direction[] genes;
+    protected int activeGeneIndex;
+    protected boolean isAlive;
+    Random generator = new Random();
+    //konkstruktor spawnerowy
+
+    public Animal(Parameters parameters) {
+        this.isAlive = true;
+        this.orientation = Direction.numToDirection(generator.nextInt(8));
+        this.position = new Vector2d(generator.nextInt(parameters.getMapWidth()), generator.nextInt(parameters.getMapHeight())); //rozmiar mapy, zalezny od configu, pozniej zmienic
+        this.energy = parameters.getStartEnergy(); //zmienic pozniej, zalezne od configu
+        this.genes = new Direction[parameters.getGenomeLength()]; //config
+        this.age = 0;
+        this.children = 0;
+        this.grassEaten = 0;
+        //ZMIEN 6 NA DLUGOSC GENOW
+        for (int i=0; i<parameters.getGenomeLength(); i++) {
+            genes[i] = Direction.numToDirection(generator.nextInt(8));
         }
-        if (validator.canMoveTo(new_position)) {
-            this.position = new_position;
-        }
+        this.activeGeneIndex = generator.nextInt(parameters.getGenomeLength());
+    }
+    public Animal(Direction[] genes,Parameters parameters) {
+        this.isAlive = true;
+        this.orientation = Direction.numToDirection(generator.nextInt(8));
+        this.position = new Vector2d(generator.nextInt(parameters.getMapWidth()), generator.nextInt(parameters.getMapHeight())); //rozmiar mapy, zalezny od configu, pozniej zmienic
+        this.energy = parameters.getStartEnergy(); //zmienic pozniej, zalezne od configu
+        this.genes = genes; //config
+        this.age = 0;
+        this.children = 0;
+        this.grassEaten = 0;
+        //ZMIEN 6 NA DLUGOSC GENOW
+        this.activeGeneIndex = generator.nextInt(parameters.getGenomeLength());
+    }
+
+
+    public Direction getOrientation() {
+        return orientation;
+    }
+
+    public void eat(Parameters parameters){
+        this.energy += parameters.getFoodEnergy();
+        this.grassEaten += 1;
     }
     public Vector2d getPosition() {
         return position;
     }
-    public MapDirection getOrientation() {
-        return orientation;
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public Direction[] getGenes() {
+        return genes;
+    }
+    public int getActiveGeneIndex() {
+        return activeGeneIndex;
     }
 }
 
