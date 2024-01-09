@@ -73,8 +73,9 @@ public class Globe implements Map{
                 Animal mom = animalsOnSpot.get(i);
                 Animal dad = animalsOnSpot.get(i-1);
                 if (mom.getEnergy()< parameters.getCopulationEnergy()) break;
-                Genes childGenes = new Genes(mom,dad,parameters);
-                Animal child = new Animal(childGenes.childGenes, parameters);
+//                Genes childGenes = new Genes(mom,dad,parameters);
+//                Animal child = new Animal(childGenes.childGenes, parameters);
+                Animal child = new Animal(mom, dad, parameters);
                 newChildren.add(child);
             }
             for (int i=0; i< newChildren.size(); i++) {

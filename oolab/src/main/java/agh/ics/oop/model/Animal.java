@@ -30,17 +30,20 @@ public class Animal {
         }
         this.activeGeneIndex = generator.nextInt(parameters.getGenomeLength());
     }
-    public Animal(Direction[] genes,Parameters parameters) {
+    public Animal(Animal mom, Animal dad, Parameters parameters) {
         this.isAlive = true;
         this.orientation = Direction.numToDirection(generator.nextInt(8));
         this.position = new Vector2d(generator.nextInt(parameters.getMapWidth()), generator.nextInt(parameters.getMapHeight())); //rozmiar mapy, zalezny od configu, pozniej zmienic
         this.energy = parameters.getStartEnergy(); //zmienic pozniej, zalezne od configu
-        this.genes = genes; //config
+        Genes childGenes = new Genes(mom,dad,parameters);
+        this.genes = childGenes.childGenes; //config
         this.age = 0;
         this.children = 0;
         this.grassEaten = 0;
         //ZMIEN 6 NA DLUGOSC GENOW
         this.activeGeneIndex = generator.nextInt(parameters.getGenomeLength());
+        mom.energy -= parameters.getCopulationEnergy();
+        dad.energy -= parameters.getCopulationEnergy();
     }
 
 
