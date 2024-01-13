@@ -1,6 +1,6 @@
 package agh.ics.oop.model;
 
-public class Parameters {
+public class SimulationParameters {
     private int maxEnergy;
     private int moveEnergy;
     private int mapWidth;
@@ -18,7 +18,7 @@ public class Parameters {
     private int genomeLength;
     private BehaviourType behaviourType;
 
-    public Parameters(int maxEnergy, int moveEnergy, int mapWidth, int mapHeight, int grassNumber, int foodEnergy, int dailyGrassGrowth, GrassGrowth growType, int animalNumber, int startEnergy, int satisfiedEnergy, int copulationEnergy, int minMutationNumber, int maxMutationNumber, int genomeLength, BehaviourType behaviourType) {
+    public SimulationParameters(int maxEnergy, int moveEnergy, int mapWidth, int mapHeight, int grassNumber, int foodEnergy, int dailyGrassGrowth, GrassGrowth growType, int animalNumber, int startEnergy, int satisfiedEnergy, int copulationEnergy, int minMutationNumber, int maxMutationNumber, int genomeLength, BehaviourType behaviourType) {
         this.maxEnergy = maxEnergy;
         this.moveEnergy = moveEnergy;
         this.mapWidth = mapWidth;

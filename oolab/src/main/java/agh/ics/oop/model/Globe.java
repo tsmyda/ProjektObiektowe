@@ -12,15 +12,16 @@ public class Globe implements Map{
     private HashMap<Vector2d, Grass> grassOnMap = new HashMap<>();
     private HashMap<Vector2d, Integer> betterGrowth = new HashMap<Vector2d, Integer>();
     private ArrayList<Animal> animalsOnMap = new ArrayList<>();
-    private Parameters parameters;
+    private ArrayList<Animal> diedAnimals = new ArrayList<>();
+    private SimulationParameters parameters;
     private Stats stats;
-
-    public Globe(Parameters parameters) {
+    Random generator = new Random();
+    public Globe(SimulationParameters parameters) {
         this.height = parameters.getMapHeight();
         this.width = parameters.getMapWidth();
         this.behaviour = parameters.getBehaviourType();
         this.parameters = parameters;
-        this.stats = new Stats(parameters);
+        this.stats = new Stats(parameters, this);
         for (int i = 0; i < parameters.getAnimalNumber(); i++) {
             Animal animal = new Animal(parameters);
             placeAnimal(animal);
@@ -42,7 +43,7 @@ public class Globe implements Map{
         for(Vector2d position: grassOnMap.keySet()){
             ArrayList<Animal> animalsOnSpot = new ArrayList<>();
             for (Animal animal: animalsOnMap) {
-                if (animal.getPosition() == position) {
+                if (animal.getPosition().equals(position)) {
                     animalsOnSpot.add(animal);
                 }
             }
@@ -63,7 +64,7 @@ public class Globe implements Map{
             if (stats.aliveAnimalsOnSpot.get(position) == 0 || stats.aliveAnimalsOnSpot.get(position) == 1) continue;
             ArrayList<Animal> animalsOnSpot = new ArrayList<>();
             for (Animal animal: animalsOnMap) {
-                if (animal.getPosition() == position) {
+                if (animal.getPosition().equals(position)) {
                     animalsOnSpot.add(animal);
                 }
             }
@@ -87,10 +88,12 @@ public class Globe implements Map{
         animalsOnMap.add(animal);
         stats.aliveAnimalsOnSpot.put(animal.getPosition(), stats.aliveAnimalsOnSpot.get(animal.getPosition())+1);
     }
+    protected void removeAnimal(Animal animal) {
+        animalsOnMap.remove(animal);
+    }
     public void placeGrass(Grass grass) {
         grassOnMap.put(grass.getPosition(), grass);
     }
-
     @Override
     public void move(Animal animal) {
         if (animal.energy >= parameters.getMoveEnergy()) {
@@ -114,10 +117,44 @@ public class Globe implements Map{
         }
         else {
             animal.isAlive = false;
-            stats.diedAnimalsOnSpot.put(animal.getPosition(), stats.diedAnimalsOnSpot.get(animal.getPosition())+1);
-            stats.aliveAnimalsOnSpot.put(animal.getPosition(), stats.aliveAnimalsOnSpot.get(animal.getPosition())-1);
+            stats.diedAnimalsOnSpot.put(animal.getPosition(), stats.diedAnimalsOnSpot.get(animal.getPosition()) + 1);
+            stats.aliveAnimalsOnSpot.put(animal.getPosition(), stats.aliveAnimalsOnSpot.get(animal.getPosition()) - 1);
             betterGrowth.put(animal.getPosition(), 3);
-            animalsOnMap.remove(animal);
+            diedAnimals.add(animal);
         }
+    }
+
+    public boolean isGrass(Vector2d spot){
+        return grassOnMap.containsKey(spot);
+    }
+
+    public boolean isAnimal(Vector2d spot){
+        return stats.aliveAnimalsOnSpot.get(spot)>0;
+    }
+
+    public Animal getAnimalOnSpot(Vector2d spot){
+        for (Animal animal: animalsOnMap){
+            if (animal.getPosition().equals(spot)){
+                return animal;
+            }
+        }
+        return null;
+    }
+    public ArrayList<Animal> getAnimalsOnMap() {
+        return animalsOnMap;
+    }
+    public HashMap<Vector2d, Grass> getGrassOnMap() {
+        return grassOnMap;
+    }
+    public Stats getStats() {
+        return stats;
+    }
+
+    public ArrayList<Animal> getDiedAnimals() {
+        return diedAnimals;
+    }
+
+    public HashMap<Vector2d,Integer> getBetterGrowth(){
+        return betterGrowth;
     }
 }

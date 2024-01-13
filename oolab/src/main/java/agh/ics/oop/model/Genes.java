@@ -5,15 +5,15 @@ import java.util.Random;
 public class Genes {
     Random generator = new Random();
     public Direction[] childGenes;
-    public Genes(Animal animal1, Animal animal2, Parameters parameters) {
+    public Genes(Animal animal1, Animal animal2, SimulationParameters parameters) {
         this.childGenes = mutations(animal1,animal2, parameters); //config
     }
-    public int genesAmount(Animal animal1, Animal animal2,Parameters parameters){
+    public int genesAmount(Animal animal1, Animal animal2, SimulationParameters parameters){
         double full = animal1.getEnergy()+animal2.getEnergy();
         double ratio = animal1.getEnergy()/full;
-        return (int) Math.floor(ratio* parameters.getGenomeLength());
+        return (int) Math.floor(ratio* (double)parameters.getGenomeLength());
     }
-    public Direction[] genesInheritance (Animal animal1, Animal animal2,Parameters parameters){
+    public Direction[] genesInheritance (Animal animal1, Animal animal2, SimulationParameters parameters){
         Direction[] childGenes = new Direction[parameters.getGenomeLength()];
         int genes1_amount = genesAmount(animal1,animal2,parameters);
         int genes2_amount = parameters.getGenomeLength() - genes1_amount;
@@ -37,7 +37,7 @@ public class Genes {
         }
         return childGenes;
     }
-    public Direction[] mutations(Animal animal1, Animal animal2, Parameters parameters){
+    public Direction[] mutations(Animal animal1, Animal animal2, SimulationParameters parameters){
         Direction[] genes =  genesInheritance(animal1, animal2, parameters);
         int amount = generator.nextInt(parameters.getGenomeLength() + 1);
         for(int i = 0; i < amount; i++){
