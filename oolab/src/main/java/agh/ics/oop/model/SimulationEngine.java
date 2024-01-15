@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 import agh.ics.oop.gui.SimulationViewApp;
 import javafx.application.Platform;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class SimulationEngine implements Runnable {
@@ -18,7 +19,7 @@ public class SimulationEngine implements Runnable {
         this.observer = observer;
         this.stats = map.getStats();
     }
-    public void dailyChores() {
+    public void dailyChores() throws FileNotFoundException {
         todaysDate += 1;
         //posprzataj trupy
         var iter = map.getAnimalsOnMap().iterator();
@@ -31,7 +32,6 @@ public class SimulationEngine implements Runnable {
         }
         //rusz zwierzetami
         for (Animal animal : map.getAnimalsOnMap()) {
-            animal.age += 1;
             map.move(animal);
         }
         //jedz
@@ -40,6 +40,9 @@ public class SimulationEngine implements Runnable {
         map.breed();
         //siej
         parameters.getGrowType().grow(map,parameters);
+        if (!parameters.isSave().equals("")) {
+            AddingStats.record(this, parameters.isSave());
+        }
 
     }
 
@@ -67,7 +70,13 @@ public class SimulationEngine implements Runnable {
     @Override
     public void run() {
         while (map.getAnimalsOnMap().size()>0 && !interrupted) {
-            Platform.runLater(() -> {dailyChores();});
+            Platform.runLater(() -> {
+                try {
+                    dailyChores();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             Platform.runLater(() -> {observer.newDayUpdate();});
             try {
                 Thread.sleep(1000);

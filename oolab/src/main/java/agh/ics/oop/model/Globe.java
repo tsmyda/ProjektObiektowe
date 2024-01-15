@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
-
+import javafx.util.Pair;
 public class Globe implements Map{
     private int height;
     private int width;
@@ -75,7 +75,13 @@ public class Globe implements Map{
                 Animal dad = animalsOnSpot.get(i-1);
                 if (mom.getEnergy()< parameters.getCopulationEnergy()) break;
                 Genes childGenes = new Genes(mom,dad,parameters);
+                mom.children+=1;
+                dad.children+=1;
+                mom.energy -= parameters.getCopulationEnergy();
+                dad.energy -= parameters.getCopulationEnergy();
                 Animal child = new Animal(childGenes.childGenes, parameters);
+                mom.childrenList.add(child);
+                dad.childrenList.add(child);
                 newChildren.add(child);
             }
             for (int i=0; i< newChildren.size(); i++) {
@@ -87,6 +93,10 @@ public class Globe implements Map{
     public void placeAnimal(Animal animal) {
         animalsOnMap.add(animal);
         stats.aliveAnimalsOnSpot.put(animal.getPosition(), stats.aliveAnimalsOnSpot.get(animal.getPosition())+1);
+        if (stats.genomes.containsKey(animal.genomeToString())) {
+            stats.genomes.put(animal.genomeToString(), stats.genomes.get(animal.genomeToString())+1);
+        }
+        else stats.genomes.put(animal.genomeToString(), 0);
     }
     protected void removeAnimal(Animal animal) {
         animalsOnMap.remove(animal);
@@ -114,6 +124,7 @@ public class Globe implements Map{
             }
             stats.aliveAnimalsOnSpot.put(animal.getPosition(), stats.aliveAnimalsOnSpot.get(animal.getPosition())+1);
             behaviour.nextGene(animal);
+            animal.age+=1;
         }
         else {
             animal.isAlive = false;
@@ -156,5 +167,8 @@ public class Globe implements Map{
 
     public HashMap<Vector2d,Integer> getBetterGrowth(){
         return betterGrowth;
+    }
+    public SimulationParameters getParameters() {
+        return parameters;
     }
 }

@@ -11,6 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.awt.*;
+
 import static java.lang.Math.min;
 
 public class SimulationViewController {
@@ -19,17 +21,17 @@ public class SimulationViewController {
     @FXML
     private Label days;
     @FXML
-    private Label numberOfAnimals;
+    private Label livingAnimals;
     @FXML
-    private Label amountOfGrass;
+    private Label grass;
     @FXML
-    private Label numberOfEmptyFields;
+    private Label emptySpots;
     @FXML
-    private Label theMostPopularGenome;
+    private Label mostPopularGenome;
     @FXML
-    private Label averageEnergyLevel;
+    private Label avgEnergy;
     @FXML
-    private Label averageDeadAgeLevel;
+    private Label avgDeadAge;
     @FXML
     private Label genome;
     @FXML
@@ -45,13 +47,16 @@ public class SimulationViewController {
     @FXML
     private Label dayOfDeath;
     @FXML
+    private Label offspringNum;
+    @FXML
     private HBox mapBox;
     private GridPane map=new GridPane();
     private SimulationEngine engine;
     private Animal followedAnimal;
 
     private boolean isFollowed = false;
-
+    private boolean showMPG = false;
+    private boolean showFS = false;
     public void initial(SimulationEngine engine) {
         this.engine=engine;
         updateLabels();
@@ -77,15 +82,28 @@ public class SimulationViewController {
         isFollowed =false;
         clearFollowedAnimalLabels();
     }
+    @FXML
+    public void showAnimalWithMPG() {
+        engine.pause();
+        showMPG = true;
+        renderMap();
+        showMPG = false;
+    }
+    @FXML void showFS() {
+        engine.pause();
+        showFS = true;
+        renderMap();
+        showFS = false;
+    }
 
     private void updateLabels(){
         days.setText(String.valueOf(engine.getTodaysDate()));
-        numberOfAnimals.setText(String.valueOf(engine.getStats().getAnimalsNum()));
-        amountOfGrass.setText(String.valueOf(engine.getStats().getGrassNum()));
-        numberOfEmptyFields.setText(String.valueOf(engine.getStats().getNumFreeSpots()));
-        theMostPopularGenome.setText(engine.getStats().getMostCommonGene());
-        averageEnergyLevel.setText(String.valueOf(engine.getStats().getAverageEnergy()));
-        averageDeadAgeLevel.setText(String.valueOf(engine.getStats().getAverageDeathDay()));
+        livingAnimals.setText(String.valueOf(engine.getStats().getAnimalsNum()));
+        grass.setText(String.valueOf(engine.getStats().getGrassNum()));
+        emptySpots.setText(String.valueOf(engine.getStats().getEmptySpots()));
+        mostPopularGenome.setText(engine.getStats().getMostCommonGene());
+        avgEnergy.setText(String.valueOf(engine.getStats().getAverageEnergy()));
+        avgDeadAge.setText(String.valueOf(engine.getStats().getAverageDeathDay()));
     }
     private void updateFollowedAnimalLabels(){
         if (isFollowed){
@@ -96,6 +114,8 @@ public class SimulationViewController {
             numberOfChildren.setText(String.valueOf(followedAnimal.getChildren()));
             daysAlive.setText(String.valueOf(followedAnimal.getAge()));
             dayOfDeath.setText(String.valueOf(followedAnimal.getDeathDay()));
+            offspringNum.setText(String.valueOf(engine.getStats().getCountOfSpring(followedAnimal)));
+            engine.getStats().reset(followedAnimal);
         }
     }
 
@@ -107,6 +127,7 @@ public class SimulationViewController {
         numberOfChildren.setText("Pick animal to see their statistics");
         daysAlive.setText("Pick animal to see their statistics");
         dayOfDeath.setText("Pick animal to see their statistics");
+        offspringNum.setText("Pick animal to see their statistics");
     }
 
     public void renderMap(){
@@ -122,25 +143,37 @@ public class SimulationViewController {
                 newPane.getColumnConstraints().add(new ColumnConstraints(WIDTH/engine.getParameters().getMapWidth()));
                 newPane.getRowConstraints().add(new RowConstraints(HEIGHT/engine.getParameters().getMapHeight()));
                 newPane.setGridLinesVisible(true);
-                if (engine.getMap().isGrass(position)){
-                    newPane.setStyle("-fx-background-color: #009900;");
+                if (showFS && engine.getParameters().getGrowType().isFertileSoil(position)) {
+                    newPane.setStyle("-fx-background-color: #660000;");
+                }
+                else if (engine.getMap().isGrass(position)){
+                    newPane.setStyle("-fx-background-color: #00DD00;");
                 }
                 else{
-                    newPane.setStyle("-fx-background-color: #FFFFFF;");
+                    newPane.setStyle("-fx-background-color: #DDDDDD;");
                 }
                 if (isFollowed && followedAnimal.isAlive() && followedAnimal.getPosition().equals(position))
                 {
-                    Circle animalImage=new Circle(min(WIDTH/engine.getParameters().getMapWidth(),HEIGHT/engine.getParameters().getMapHeight())/2.0, new Color(0,1,0,1));
+                    Circle animalImage=new Circle(min(WIDTH/engine.getParameters().getMapWidth(),HEIGHT/engine.getParameters().getMapHeight())/3.0, Color.CYAN);
                     newPane.add(animalImage,0,0);
                     newPane.setValignment(animalImage, VPos.CENTER);
                     newPane.setHalignment(animalImage, HPos.CENTER);
                 }
-                if (engine.getMap().isAnimal(position)){
+
+                else if (engine.getMap().isAnimal(position)){
                     Animal animal=engine.getMap().getAnimalOnSpot(position);
-                    Circle animalImage=animal.getImage(min(WIDTH/engine.getParameters().getMapWidth(),HEIGHT/engine.getParameters().getMapHeight()), this);
-                    newPane.add(animalImage,0,0);
-                    newPane.setValignment(animalImage, VPos.CENTER);
-                    newPane.setHalignment(animalImage, HPos.CENTER);
+                    if (showMPG && animal.genomeToString().equals(engine.getStats().getMostCommonGene())) {
+                        Circle animalImage  = new Circle(min(WIDTH/engine.getParameters().getMapWidth(),HEIGHT/engine.getParameters().getMapHeight())/3.0, Color.YELLOW);
+                        newPane.add(animalImage,0,0);
+                        newPane.setValignment(animalImage, VPos.CENTER);
+                        newPane.setHalignment(animalImage, HPos.CENTER);
+                    }
+                    else {
+                        Circle animalImage=animal.getImage(min(WIDTH/engine.getParameters().getMapWidth(),HEIGHT/engine.getParameters().getMapHeight()), this);
+                        newPane.add(animalImage,0,0);
+                        newPane.setValignment(animalImage, VPos.CENTER);
+                        newPane.setHalignment(animalImage, HPos.CENTER);
+                    }
                 }
                 map.add(newPane,x,engine.getParameters().getMapHeight()-1-y);
             }
@@ -156,6 +189,7 @@ public class SimulationViewController {
 
     public void follow(Animal animal){
         isFollowed = true;
+        //renderMap();
         followedAnimal = animal;
         updateFollowedAnimalLabels();
     }

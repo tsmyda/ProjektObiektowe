@@ -16,9 +16,16 @@ public class SimulationParameters {
     private int minMutationNumber;
     private int maxMutationNumber;
     private int genomeLength;
+    private String fileName;
     private BehaviourType behaviourType;
 
-    public SimulationParameters(int maxEnergy, int moveEnergy, int mapWidth, int mapHeight, int grassNumber, int foodEnergy, int dailyGrassGrowth, GrassGrowth growType, int animalNumber, int startEnergy, int satisfiedEnergy, int copulationEnergy, int minMutationNumber, int maxMutationNumber, int genomeLength, BehaviourType behaviourType) {
+    public SimulationParameters(int maxEnergy, int moveEnergy, int mapWidth, int mapHeight, int grassNumber, int foodEnergy, int dailyGrassGrowth, GrassGrowth growType, int animalNumber, int startEnergy, int satisfiedEnergy, int copulationEnergy, int minMutationNumber, int maxMutationNumber, int genomeLength, BehaviourType behaviourType, String FileName) throws  IllegalArgumentException{
+        if (maxEnergy <0 || moveEnergy<0 || mapWidth <= 0 || mapHeight <= 0 || startEnergy > maxEnergy || grassNumber < 0 || foodEnergy < 0
+        ||dailyGrassGrowth < 0 ||copulationEnergy>satisfiedEnergy || copulationEnergy < 0 || satisfiedEnergy < 0 ||
+        animalNumber < 0 || startEnergy < 0 || minMutationNumber < 0 || maxMutationNumber < 0 || genomeLength < 0
+        ) {
+            throw new IllegalArgumentException();
+        }
         this.maxEnergy = maxEnergy;
         this.moveEnergy = moveEnergy;
         this.mapWidth = mapWidth;
@@ -35,6 +42,7 @@ public class SimulationParameters {
         this.maxMutationNumber = maxMutationNumber;
         this.genomeLength = genomeLength;
         this.behaviourType = behaviourType;
+        this.fileName = FileName;
     }
 
     public int getMaxEnergy() {
@@ -99,5 +107,8 @@ public class SimulationParameters {
 
     public int getStartEnergy() {
         return startEnergy;
+    }
+    public String isSave() {
+        return fileName;
     }
 }

@@ -4,37 +4,109 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.gui.ConfigController">
+<?import com.sun.javafx.webkit.theme.RenderThemeImpl.FormMenuList?>
+<?import com.sun.javafx.webkit.theme.RenderThemeImpl.FormRadioButton?>
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.gui.ConfigController">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.5" minWidth="4.0" prefWidth="55.5" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="505.5" minWidth="10.0" prefWidth="243.5" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.5" minWidth="10.0" prefWidth="52.5" />
+        <ColumnConstraints hgrow="SOMETIMES"  />
+        <ColumnConstraints hgrow="SOMETIMES"  />
+        <ColumnConstraints hgrow="SOMETIMES" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="133.5" minHeight="10.0" prefHeight="92.5" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="69.5" minHeight="10.0" prefHeight="52.5" vgrow="SOMETIMES" />
+        <RowConstraints  vgrow="SOMETIMES" />
+        <RowConstraints  vgrow="SOMETIMES" />
+        <RowConstraints  vgrow="SOMETIMES" />
+        <RowConstraints  vgrow="SOMETIMES" />
+        <RowConstraints vgrow="SOMETIMES" />
+        <RowConstraints  vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <VBox alignment="CENTER" prefHeight="102.0" prefWidth="227.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <VBox alignment="CENTER" prefHeight="10.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
-                <Label text="Wpisz absolutny adres do pliku" />
-                <TextField fx:id="filePath" />
-                <Button mnemonicParsing="false" onAction="#startSimulation" text="Start!" />
+                <Label text="Podaj szerokosc mapy" maxWidth="600" alignment="CENTER" />
+                <TextField fx:id="mapWidth"  maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Podaj wysokosc mapy " maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="mapHeight" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Startowa liczba roslin" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="startGrass" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Energia z jedzenia" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="foodEnergy" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Dzienna liczba roslin" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="dailyGrass" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Startowa liczba zwierzakow" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="startAnimal" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Startowa energia zwierzakow" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="startEnergy" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Maksymalna Energia Zwierzaka" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="fullEnergy" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Energia kopulacji" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="copulationEnergy" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Minimalna mutacja" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="minMutation" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Maksymalna mutacja" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="maxMutation" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Dlugosc genomu" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="genomeLength" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Energia ruchu" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="moveEnergy" maxWidth="50"/>
+            </children>
+            <children>
+                <Label text="Energia satysfakcji" maxWidth="600" alignment="CENTER"/>
+                <TextField fx:id="satisfiedEnergy" maxWidth="50"/>
+            </children>
+            <children>
+                <HBox alignment="CENTER">
+                    <Label text="LifeGiving Carcasses  " />
+                    <CheckBox fx:id="lifeGivingCarcasses"/>
+                    <Label text="  CrazyBehaviour  " />
+                    <CheckBox fx:id="crazyBehaviour"/>
+                </HBox>
+            </children>
+            <children>
+                <Label text="Podaj argumenty" maxWidth="600" alignment="CENTER" fx:id="infoLabel"/>
             </children>
         </VBox>
-        <VBox alignment="BOTTOM_CENTER" GridPane.columnIndex="1">
+    </children>
+    <children>
+        <VBox>
+            <Label text="Zapisz statystyki  " />
+            <TextField fx:id="fileName"/>
+            <Label text="Zapisz config  " />
+            <TextField fx:id="configFileName"/>
+            <Label text="Wczytaj config  " />
+            <TextField fx:id="readConfigFileName"/>
+        </VBox>
+    </children>
+    <children>
+        <VBox alignment="BOTTOM_CENTER" prefHeight="34.0" prefWidth="227.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <children>
-                <Label contentDisplay="CENTER" text="Podaj ścieżkę do piliku konfiguracyjnego">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                </Label>
+                <Button onAction="#startSimulation" alignment="CENTER" text="Start simulation"/>
             </children>
         </VBox>
-        <VBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="227.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <children>
-                <Label fx:id="infoLabel" alignment="CENTER" contentDisplay="CENTER" textAlignment="CENTER" wrapText="true" />
-            </children></VBox>
     </children>
 </GridPane>
+

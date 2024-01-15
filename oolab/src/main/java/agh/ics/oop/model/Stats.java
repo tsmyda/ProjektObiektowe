@@ -2,13 +2,13 @@ package agh.ics.oop.model;
 
 import java.util.Collections;
 import java.util.HashMap;
-
+import java.util.concurrent.atomic.AtomicInteger;
+import javafx.util.Pair;
 public class Stats {
     private Globe map;
     protected HashMap<Vector2d, Integer> aliveAnimalsOnSpot = new HashMap<>();
     protected HashMap<Vector2d, Integer> diedAnimalsOnSpot = new HashMap<>();
-    private HashMap<String, Integer> genomes=new HashMap<String, Integer>();
-    private String mostPopularGene = "";
+    protected HashMap<String, Integer> genomes=new HashMap<String, Integer>();
 
     public Stats(SimulationParameters parameters, Globe map) {
         this.map = map;
@@ -19,8 +19,14 @@ public class Stats {
             }
         }
     }
-    public int getNumFreeSpots() {
-        return 0;
+    public int getEmptySpots() {
+        AtomicInteger empty = new AtomicInteger();
+        aliveAnimalsOnSpot.forEach((key, value) -> {
+            if (value==0) {
+                empty.addAndGet(1);
+            }
+        });
+        return empty.get();
     }
     public int getAnimalsNum() {
         return map.getAnimalsOnMap().size();
@@ -54,12 +60,28 @@ public class Stats {
             Integer maxVal= Collections.max(genomes.values());
             for (String genes: genomes.keySet()){
                 if (genomes.get(genes).equals(maxVal)){
-                    mostPopularGene=genes;
                     return genes;
                 }
             }
         }
         return "";
+    }
+    public Integer getCountOfSpring(Animal animal){
+        int offspringCount = 0;
+
+        for (Animal child : animal.getChildrenList()) {
+            if(child.getVisited() == 0) {
+                child.visited = 1;
+                offspringCount += 1 + getCountOfSpring(child);
+            }
+        }
+        return offspringCount;
+    }
+    public void reset(Animal animal){
+        animal.visited = 0;
+        for (Animal child : animal.getChildrenList()) {
+            reset(child);
+        }
     }
     public HashMap<Vector2d, Integer> getDiedAnimalsOnSpot() {
         return diedAnimalsOnSpot;

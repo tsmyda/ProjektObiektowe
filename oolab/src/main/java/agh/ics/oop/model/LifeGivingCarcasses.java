@@ -1,16 +1,19 @@
 package agh.ics.oop.model;
 
+import javafx.fxml.FXML;
+
 import java.security.KeyStore;
 import java.util.*;
 import java.util.Map;
 
 public class LifeGivingCarcasses implements GrassGrowth{
     private SimulationParameters parameters;
+    ArrayList <Vector2d> fertileSoil = new ArrayList<>();
     Random generator = new Random();
     @Override
     public void grow(Globe map, SimulationParameters parameters) {
         int i = 0;
-        ArrayList <Vector2d> fertileSoil = new ArrayList<>();
+        fertileSoil.clear();
         Iterator<Vector2d> iter = map.getBetterGrowth().keySet().iterator();
         while(iter.hasNext()) {
             Vector2d v = iter.next();
@@ -70,5 +73,9 @@ public class LifeGivingCarcasses implements GrassGrowth{
         if(!fertileSoil.contains(new Vector2d(vector.getX(), vector.getY()))) {
             fertileSoil.add(new Vector2d(vector.getX(), vector.getY()));
         }
+    }
+    @Override
+    public boolean isFertileSoil(Vector2d spot) {
+        return fertileSoil.contains(spot);
     }
 }

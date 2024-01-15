@@ -6,9 +6,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class Animal {
+    protected Integer visited;
     protected Direction orientation;
     protected Vector2d position;
     protected int energy;
@@ -19,6 +25,7 @@ public class Animal {
     protected Direction[] genes;
     protected int activeGeneIndex;
     protected boolean isAlive;
+    protected List<Animal> childrenList;
     protected SimulationParameters parameters;
     Random generator = new Random();
     //konkstruktor spawnerowy
@@ -34,6 +41,8 @@ public class Animal {
         this.children = 0;
         this.grassEaten = 0;
         this.parameters = parameters;
+        this.visited = 0;
+        this.childrenList = new ArrayList<Animal>();
         //ZMIEN 6 NA DLUGOSC GENOW
         for (int i=0; i<parameters.getGenomeLength(); i++) {
             genes[i] = Direction.numToDirection(generator.nextInt(8));
@@ -51,6 +60,8 @@ public class Animal {
         this.children = 0;
         this.grassEaten = 0;
         this.parameters = parameters;
+        this.visited = 0;
+        this.childrenList = new ArrayList<Animal>();
         //ZMIEN 6 NA DLUGOSC GENOW
         this.activeGeneIndex = generator.nextInt(parameters.getGenomeLength());
     }
@@ -61,7 +72,7 @@ public class Animal {
     }
 
     public void eat(SimulationParameters parameters){
-        this.energy += parameters.getFoodEnergy();
+        this.energy = min(this.energy + parameters.getFoodEnergy(),parameters.getMaxEnergy());
         this.grassEaten += 1;
     }
     public Vector2d getPosition() {
@@ -79,7 +90,8 @@ public class Animal {
         return activeGeneIndex;
     }
     public Circle getImage(Double size, SimulationViewController follower) {
-        Circle circle = new Circle(size/2, Color.BLACK);
+        Circle circle = new Circle(size/3, new Color(min((double) this.energy/parameters.getMaxEnergy(),1), 0, 1, 1));
+        //Circle circle = new Circle(size/3, new Color(0, 0, 0, 1));
         circle.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -99,7 +111,20 @@ public class Animal {
         return age;
     }
     public int getDeathDay() {
+        if (this.isAlive) {
+            return -1;
+        }
         return deathDay;
+    }
+    public void addChild(Animal child) {
+        childrenList.add(child);
+    }
+
+    public List<Animal> getChildrenList() {
+        return childrenList;
+    }
+    public Integer getVisited(){
+        return visited;
     }
     public String genomeToString() {
         String genome = "";
