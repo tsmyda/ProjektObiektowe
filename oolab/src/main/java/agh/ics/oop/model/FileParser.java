@@ -12,16 +12,13 @@ public class FileParser {
         writer.write(line);
         writer.close();
     }
-    public static void readConfig(String filePath) throws FileNotFoundException {
+    public static String[] readConfig(String filePath) throws FileNotFoundException {
         try {
             Paths.get(filePath);
-            Scanner scanner = new Scanner(new File(filePath));
-            scanner.useDelimiter(";");
-            ArrayList<String> variables = new ArrayList<String>();
-            while (scanner.hasNext()) {
-                variables.add(scanner.next());
-            }
-            System.out.println(variables);
+            Scanner reader = new Scanner(new File(filePath));
+            String text = reader.nextLine();
+            String[] config = text.split(";");
+            return config;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

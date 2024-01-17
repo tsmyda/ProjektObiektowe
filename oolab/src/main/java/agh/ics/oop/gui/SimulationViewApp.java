@@ -36,9 +36,8 @@ public class SimulationViewApp extends Application {
     }
 
     public void newDayUpdate(){
-        controller.newDayUpdate();
+        controller.newDay();
     }
-    //public void showEndScene() {controller.showEndScene();}
 
 
 }

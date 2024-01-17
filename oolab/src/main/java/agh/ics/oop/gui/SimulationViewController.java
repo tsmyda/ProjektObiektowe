@@ -11,8 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.awt.*;
-
 import static java.lang.Math.min;
 
 public class SimulationViewController {
@@ -59,7 +57,7 @@ public class SimulationViewController {
     private boolean showFS = false;
     public void initial(SimulationEngine engine) {
         this.engine=engine;
-        updateLabels();
+        updateStats();
         clearFollowedAnimalLabels();
         map.setGridLinesVisible(true);
         mapBox.getChildren().addAll(map);
@@ -96,7 +94,7 @@ public class SimulationViewController {
         showFS = false;
     }
 
-    private void updateLabels(){
+    private void updateStats(){
         days.setText(String.valueOf(engine.getTodaysDate()));
         livingAnimals.setText(String.valueOf(engine.getStats().getAnimalsNum()));
         grass.setText(String.valueOf(engine.getStats().getGrassNum()));
@@ -105,7 +103,7 @@ public class SimulationViewController {
         avgEnergy.setText(String.valueOf(engine.getStats().getAverageEnergy()));
         avgDeadAge.setText(String.valueOf(engine.getStats().getAverageDeathDay()));
     }
-    private void updateFollowedAnimalLabels(){
+    private void updateFollowedAnimalStats(){
         if (isFollowed){
             genome.setText(followedAnimal.genomeToString());
             activeGene.setText(String.valueOf(followedAnimal.getActiveGeneIndex()));
@@ -120,14 +118,14 @@ public class SimulationViewController {
     }
 
     private void clearFollowedAnimalLabels(){
-        genome.setText("Pick animal to see their statistics");
-        activeGene.setText("Pick animal to see their statistics");
-        energy.setText("Pick animal to see their statistics");
-        amountOfEatenGrass.setText("Pick animal to see their statistics");
-        numberOfChildren.setText("Pick animal to see their statistics");
-        daysAlive.setText("Pick animal to see their statistics");
-        dayOfDeath.setText("Pick animal to see their statistics");
-        offspringNum.setText("Pick animal to see their statistics");
+        genome.setText("Pick an animal");
+        activeGene.setText("Pick an animal");
+        energy.setText("Pick an animal");
+        amountOfEatenGrass.setText("Pick an animal");
+        numberOfChildren.setText("Pick an animal");
+        daysAlive.setText("Pick an animal");
+        dayOfDeath.setText("Pick an animal");
+        offspringNum.setText("Pick an animal");
     }
 
     public void renderMap(){
@@ -181,16 +179,15 @@ public class SimulationViewController {
 
     }
 
-    public void newDayUpdate(){
-        updateLabels();
+    public void newDay(){
+        updateStats();
         renderMap();
-        updateFollowedAnimalLabels();
+        updateFollowedAnimalStats();
     }
 
     public void follow(Animal animal){
         isFollowed = true;
-        //renderMap();
         followedAnimal = animal;
-        updateFollowedAnimalLabels();
+        updateFollowedAnimalStats();
     }
 }

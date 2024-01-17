@@ -65,41 +65,82 @@ public class ConfigController {
     private TextField readConfigFileName;
 
     @FXML
-    public void startSimulation() {
+    public void startSimulation() throws FileNotFoundException {
+        int mapWidthVal;
+        int mapHeightVal;
+        int startGrassVal;
+        int foodEnergyVal;
+        int dailyGrassVal;
+        int startAnimalVal;
+        int startEnergyVal;
+        int satisfiedEnergyVal;
+        int fullEnergyVal;
+        int moveEnergyVal;
+        int copulationEnergyVal;
+        int maxMutationVal;
+        int minMutationVal;
+        int genomeLengthVal;
+        GrassGrowth grassGrowType = new GrassGrowing();
+        BehaviourType behaviourType = new NormalBehaviour();
+        String grassGrowTypeName;
+        String behaviourTypeName;
         //System.out.println(readConfigFileName.getText());
-
-        int mapWidthVal = Integer.parseInt(mapWidth.getText());
-        int mapHeightVal = Integer.parseInt(mapHeight.getText());
-        int startGrassVal = Integer.parseInt(startGrass.getText());
-        int foodEnergyVal = Integer.parseInt(foodEnergy.getText());
-        int dailyGrassVal = Integer.parseInt(dailyGrass.getText());
-        int startAnimalVal = Integer.parseInt(startAnimal.getText());
-        int startEnergyVal = Integer.parseInt(startEnergy.getText());
-        int satisfiedEnergyVal = Integer.parseInt(satisfiedEnergy.getText());
-        int fullEnergyVal = Integer.parseInt(fullEnergy.getText());
-        int moveEnergyVal = Integer.parseInt(moveEnergy.getText());
-        int copulationEnergyVal = Integer.parseInt(copulationEnergy.getText());
-        int maxMutationVal = Integer.parseInt(maxMutation.getText());
-        int minMutationVal = Integer.parseInt(minMutation.getText());
-        int genomeLengthVal = Integer.parseInt(genomeLength.getText());
-        GrassGrowth grassGrowType;
-        String grassGrowTypeName = "equators";
-        String behaviourTypeName = "normal";
-        if (lifeGivingCarcasses.isSelected()) {
-            grassGrowType = new LifeGivingCarcasses();
-            grassGrowTypeName = "carcasses";
-        } else {
-            grassGrowType = new GrassGrowing();
+        if(!readConfigFileName.getText().isBlank()) {
+            grassGrowTypeName = "equators";
+            behaviourTypeName = "normal";
+            String[] config = FileParser.readConfig(readConfigFileName.getText());
+            mapWidthVal = Integer.parseInt(config[2]);
+            mapHeightVal = Integer.parseInt(config[3]);
+            startGrassVal = Integer.parseInt(config[4]);
+            foodEnergyVal = Integer.parseInt(config[5]);
+            dailyGrassVal = Integer.parseInt(config[6]);
+            startAnimalVal = Integer.parseInt(config[8]);
+            startEnergyVal = Integer.parseInt(config[9]);
+            satisfiedEnergyVal = Integer.parseInt(config[10]);
+            fullEnergyVal = Integer.parseInt(config[0]);
+            moveEnergyVal = Integer.parseInt(config[1]);
+            copulationEnergyVal = Integer.parseInt(config[11]);
+            maxMutationVal = Integer.parseInt(config[13]);
+            minMutationVal = Integer.parseInt(config[12]);
+            genomeLengthVal = Integer.parseInt(config[14]);
+            if(config[7].equals("carcasses")){
+                grassGrowType = new LifeGivingCarcasses();
+            }
+            if(config[15].equals("crazy")){
+                behaviourType = new CrazyBehaviour();
+            }
         }
-        BehaviourType behaviourType;
-        if (crazyBehaviour.isSelected()) {
-            behaviourType = new CrazyBehaviour();
-            behaviourTypeName = "crazy";
-        } else {
-            behaviourType = new NormalBehaviour();
+        else {
+            mapWidthVal = Integer.parseInt(mapWidth.getText());
+            mapHeightVal = Integer.parseInt(mapHeight.getText());
+            startGrassVal = Integer.parseInt(startGrass.getText());
+            foodEnergyVal = Integer.parseInt(foodEnergy.getText());
+            dailyGrassVal = Integer.parseInt(dailyGrass.getText());
+            startAnimalVal = Integer.parseInt(startAnimal.getText());
+            startEnergyVal = Integer.parseInt(startEnergy.getText());
+            satisfiedEnergyVal = Integer.parseInt(satisfiedEnergy.getText());
+            fullEnergyVal = Integer.parseInt(fullEnergy.getText());
+            moveEnergyVal = Integer.parseInt(moveEnergy.getText());
+            copulationEnergyVal = Integer.parseInt(copulationEnergy.getText());
+            maxMutationVal = Integer.parseInt(maxMutation.getText());
+            minMutationVal = Integer.parseInt(minMutation.getText());
+            genomeLengthVal = Integer.parseInt(genomeLength.getText());
+            grassGrowTypeName = "equators";
+            behaviourTypeName = "normal";
+            if (lifeGivingCarcasses.isSelected()) {
+                grassGrowType = new LifeGivingCarcasses();
+                grassGrowTypeName = "carcasses";
+            } else {
+                grassGrowType = new GrassGrowing();
+            }
+            if (crazyBehaviour.isSelected()) {
+                behaviourType = new CrazyBehaviour();
+                behaviourTypeName = "crazy";
+            } else {
+                behaviourType = new NormalBehaviour();
+            }
         }
-
-        if (!configFileName.getText().equals("")) {
+        if (!configFileName.getText().isBlank()) {
             String line = fullEnergyVal+";"+moveEnergyVal+";"+mapWidthVal+";"+mapHeightVal+";"+startGrassVal+";"+foodEnergyVal+";"+dailyGrassVal+";"+ grassGrowTypeName+";"+startAnimalVal+";"+ startEnergyVal+";"+ satisfiedEnergyVal+";"+ copulationEnergyVal+";"+ minMutationVal+";"+ maxMutationVal+";"+ genomeLengthVal+";"+ behaviourTypeName;
             try {
                 FileParser.saveConfig(configFileName.getText(),line);
