@@ -14,7 +14,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class Animal {
-    protected Integer visited;
+    protected Integer visited; // protected? czy coś dziedziczy/będzie dzedziczyć z tej klasy?
     protected Direction orientation;
     protected Vector2d position;
     protected int energy;
@@ -27,7 +27,7 @@ public class Animal {
     protected boolean isAlive;
     protected List<Animal> childrenList;
     protected SimulationParameters parameters;
-    Random generator = new Random();
+    private static Random generator = new Random();
     //konkstruktor spawnerowy
 
     public Animal(SimulationParameters parameters) {
@@ -84,7 +84,7 @@ public class Animal {
     }
 
     public Direction[] getGenes() {
-        return genes;
+        return genes; // dehermetyzacja
     }
     public int getActiveGeneIndex() {
         return activeGeneIndex;
@@ -100,7 +100,7 @@ public class Animal {
         });
         return circle;
     }
-    private void followMe(SimulationViewController follower){follower.follow(this);}
+    private void followMe(SimulationViewController follower){follower.follow(this);} // ?
     public int getGrassEaten() {
         return grassEaten;
     }

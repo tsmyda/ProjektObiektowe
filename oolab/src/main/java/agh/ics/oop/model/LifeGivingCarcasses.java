@@ -52,7 +52,7 @@ public class LifeGivingCarcasses implements GrassGrowth{
         if(!fertileSoil.contains(new Vector2d(vector.getX(), vector.getY() - 1))) {
             fertileSoil.add(new Vector2d(vector.getX(), vector.getY() - 1));
         }
-        if(!fertileSoil.contains(new Vector2d(vector.getX() + 1, vector.getY() - 1))) {
+        if(!fertileSoil.contains(new Vector2d(vector.getX() + 1, vector.getY() - 1))) { // nie łatwiej by było to zrobić jako zbiór?
             fertileSoil.add(new Vector2d(vector.getX() + 1, vector.getY() - 1));
         }
         if(!fertileSoil.contains(new Vector2d(vector.getX() + 1, vector.getY()))) {

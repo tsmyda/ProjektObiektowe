@@ -72,7 +72,7 @@ public class SimulationViewController {
     }
     @FXML
     public void stopButtonAction(){
-        engine.play();
+        engine.play(); // ?
         engine.stop();
     }
     @FXML
@@ -81,13 +81,13 @@ public class SimulationViewController {
         clearFollowedAnimalLabels();
     }
     @FXML
-    public void showAnimalWithMPG() {
+    public void showAnimalWithMPG() { // MPG?
         engine.pause();
         showMPG = true;
         renderMap();
         showMPG = false;
     }
-    @FXML void showFS() {
+    @FXML void showFS() {  // FS?
         engine.pause();
         showFS = true;
         renderMap();

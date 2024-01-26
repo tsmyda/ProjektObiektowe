@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class SimulationEngine implements Runnable {
-    SimulationParameters parameters;
+    final SimulationParameters parameters;
     private Globe map;
     private int todaysDate = 0;
     private SimulationViewApp observer;
@@ -77,7 +77,7 @@ public class SimulationEngine implements Runnable {
                     throw new RuntimeException(e);
                 }
             });
-            Platform.runLater(() -> {observer.newDayUpdate();});
+            Platform.runLater(() -> {observer.newDayUpdate();}); // czemu to idzie do wątku GUI?
             try {
                 Thread.sleep(1000);
                 synchronized(this) {

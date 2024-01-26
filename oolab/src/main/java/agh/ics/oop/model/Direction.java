@@ -9,7 +9,7 @@ public enum Direction {
     SOUTHWEST,
     WEST,
     NORTHWEST;
-    public int toNumber(){
+    public int toNumber(){ // enum ma metodę ordinal
         return switch(this) {
             case NORTH -> 0;
             case NORTHEAST -> 1;
@@ -22,17 +22,7 @@ public enum Direction {
         };
     }
     public static Direction numToDirection(int num){
-        return switch(num) {
-            case 0 -> NORTH;
-            case 1 -> NORTHEAST;
-            case 2 -> EAST;
-            case 3 -> SOUTHEAST;
-            case 4 -> SOUTH;
-            case 5 -> SOUTHWEST;
-            case 6 -> WEST;
-            case 7 -> NORTHWEST;
-            default -> null;
-        };
+        return values()[num];
     }
     public Direction next() {
         Direction[] values = Direction.values();
@@ -44,7 +34,7 @@ public enum Direction {
     }
     public Vector2d toUnitVector() {
         return switch(this) {
-            case NORTH -> new Vector2d(0,1);
+            case NORTH -> new Vector2d(0,1);  // bardzo by się opłacił parametr konstruktora
             case NORTHEAST -> new Vector2d(1,1);
             case EAST -> new Vector2d(1,0);
             case SOUTHEAST -> new Vector2d(1,-1);
