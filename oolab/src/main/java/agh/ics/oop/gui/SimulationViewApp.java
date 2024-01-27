@@ -22,7 +22,7 @@ public class SimulationViewApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/SimulationView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/simulationView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         controller=fxmlLoader.getController();
         controller.initial(engine);
