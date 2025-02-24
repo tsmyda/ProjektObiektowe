@@ -12,13 +12,7 @@ Celem projektu jest odwzorowanie podstawowych zasad ewolucji, przetrwania i ruch
 
 ## 🖼️ Zrzuty ekranu  
 ### Panel konfiguracji  
-![Konfiguracja](screenshots/config_screen.png)  
+![Konfiguracja](screenshots/config.png)  
 
 ### Symulacja w trakcie działania  
-![Symulacja](screenshots/simulation_screen.png)  
-
-## 🛠️ Instalacja i uruchomienie  
-1. Sklonuj repozytorium:  
-   ```sh
-   git clone https://github.com/twoje-repo/darwin-world.git
-   cd darwin-world
+![Symulacja](screenshots/game.png)  
