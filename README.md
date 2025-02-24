@@ -6,7 +6,7 @@ Celem projektu jest odwzorowanie podstawowych zasad ewolucji, przetrwania i ruch
 
 ## 🎮 Funkcjonalności  
 ✔️ Możliwość konfiguracji parametrów świata (np. rozmiar mapy, liczba roślin, energia zwierząt)  
-✔️ Realistyczna symulacja ruchu i ewolucji organizmów  
+✔️ Symulacja ruchu i ewolucji organizmów  
 ✔️ Mechanika mutacji i rozmnażania  
 ✔️ Dynamiczne zmiany ekosystemu w zależności od warunków  
 
