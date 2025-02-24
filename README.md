@@ -12,7 +12,7 @@ Celem projektu jest odwzorowanie podstawowych zasad ewolucji, przetrwania i ruch
 
 ## 🖼️ Zrzuty ekranu  
 ### Panel konfiguracji  
-![Konfiguracja](screenshots/config.png)  
+![Konfiguracja](config.png)  
 
 ### Symulacja w trakcie działania  
-![Symulacja](screenshots/game.png)  
+![Symulacja](game.png)  
